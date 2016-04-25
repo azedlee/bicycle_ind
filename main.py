@@ -20,6 +20,6 @@ customers = [
     ]
 
 #Sell a Bike to a Customer
-shop.sell(bikes, customers)
+
 
 print(shop)

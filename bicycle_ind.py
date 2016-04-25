@@ -22,26 +22,39 @@ class Customers(object):
     
     def __repr__(self):
         return "{0} has ${1}".format(self.customer_name, self.customer_money)
+    
+    def can_afford(self, cost):
+        return self.customer_money >= cost
+
 
 class BikeShop(object):
     """
     Bike shop contains shop name, stock per model, 20% profit margin per cost and profit per bicycle sold
     """
-    def __init__(self, shop_name, cost_margin, bike):
+    def __init__(self, shop_name, cost_margin, bikes):
         self.shop_name = shop_name
         self.cost_margin = cost_margin
         
         self.model_stock = {}
         self.profit = 0
+        self.inventory = {}
         
-        for bikes in bike:
+        for bike in bikes:
             
             bike.price = bike.cost * (1 + self.cost_margin/100)
-            self.model_stock[bike.model] = bike.price
+            self.model_stock[bike.model] = bike
+            self.inventory[bike.model] = 5
+    
     
     def sell(self, bike, customer):
         
-        customer.bike = bike
-        customer.money -= bike.price
-        self.profit += bike.markup
-        del self.model_stock[bike.model]
+        if customer.can_afford(bike.price):
+            if self.inventory[bike.model] > 0:
+                customer.bike = bike
+                customer.money -= bike.price
+                self.profit += bike.price
+                self.inventory[bike.model] -= 1
+            else:
+                print("{} is out of Stock".format(bike.model))
+        else:
+            print("{} does not have enough money.".format(customer.name))
