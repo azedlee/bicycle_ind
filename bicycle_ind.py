@@ -42,8 +42,8 @@ class BikeShop(object):
         for bike in bikes:
             
             bike.price = bike.cost * (1 + self.cost_margin/100)
-            self.model_stock[bike.model] = bike
-            self.inventory[bike.model] = 5
+            self.model_stock[bike.model_name] = bike
+            self.inventory[bike.model_name] = 5
     
     
     def sell(self, bike, customer):
